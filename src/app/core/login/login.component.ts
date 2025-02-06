@@ -18,42 +18,45 @@ import { UserRole } from '../../shared/models/user-role';
   template: `
     <div class="login-container">
       <h2>Login</h2>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <input type="text" formControlName="username" placeholder="Username" />
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="Password"
-        />
-        <app-custom-button
-          [label]="'Login'"
-          [role]="buttonRole"
-          [disabled]="loginForm.invalid"
-        ></app-custom-button>
-      </form>
-
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
+      
+      <div class="tabs">
+        <button (click)="activeTab = 'login'" [class.active]="activeTab === 'login'">Login</button>
+        <button (click)="activeTab = 'structure'" [class.active]="activeTab === 'structure'">Project Structure</button>
       </div>
-
-      <div class="credentials-container">
-        <h3>Login Credentials:</h3>
-        <p>- Doctor: username 'doctor'</p>
-        <p>- Nurse: username 'nurse'</p>
-        <p>- Psychologist: username 'psychologist'</p>
-        <p>- Admin: username 'admin'</p>
+      
+      <div *ngIf="activeTab === 'login'">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <input type="text" formControlName="username" placeholder="Username" />
+          <input type="password" formControlName="password" placeholder="Password" />
+          <app-custom-button
+            [label]="'Login'"
+            [role]="buttonRole"
+            [disabled]="loginForm.invalid"
+          ></app-custom-button>
+        </form>
+        
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+        
+        <div class="credentials-container">
+          <h3>Login Credentials:</h3>
+          <p>- Doctor: username 'doctor'</p>
+          <p>- Nurse: username 'nurse'</p>
+          <p>- Psychologist: username 'psychologist'</p>
+          <p>- Admin: username 'admin'</p>
+        </div>
       </div>
-
-      <div class="structure-folder">
+      
+      <div *ngIf="activeTab === 'structure'" class="structure-folder">
         <h3>Project Structure:</h3>
         <pre>
-C:USERSLUCAS.LIMADESKTOPCLINIC-RBACSRC 
+C:\USERS\LUCAS.LIMA\DESKTOP\CLINIC-RBAC\SRC 
 |   index.html
 |   main.ts
 |   styles.scss
 |
----app
+\---app
     |   app.component.html
     |   app.component.scss
     |   app.component.spec.ts
@@ -62,7 +65,7 @@ C:USERSLUCAS.LIMADESKTOPCLINIC-RBACSRC
     |   app.routes.ts
     |
     +---admin
-    |   ---user-management
+    |   \---user-management
     |           user-management.component.html
     |           user-management.component.scss
     |           user-management.component.spec.ts
@@ -83,7 +86,7 @@ C:USERSLUCAS.LIMADESKTOPCLINIC-RBACSRC
     |   |       login.component.spec.ts
     |   |       login.component.ts
     |   |
-    |   ---services
+    |   \---services
     |           auth.service.spec.ts
     |           auth.service.ts
     |
@@ -106,24 +109,23 @@ C:USERSLUCAS.LIMADESKTOPCLINIC-RBACSRC
     |   |       nurse.component.spec.ts
     |   |       nurse.component.ts
     |   |
-    |   ---psychologist
+    |   \---psychologist
     |           psychologist.component.html
     |           psychologist.component.scss
     |           psychologist.component.spec.ts
     |           psychologist.component.ts
     |
-    ---shared
+    \---shared
         +---components
-        |   ---custom-button
+        |   \---custom-button
         |           custom-button.component.html
         |           custom-button.component.scss
         |           custom-button.component.spec.ts
         |           custom-button.component.ts
         |
-        ---models
+        \---models
                 user-role.ts
-        </pre
-        >
+        </pre>
       </div>
     </div>
   `,
@@ -140,12 +142,26 @@ C:USERSLUCAS.LIMADESKTOPCLINIC-RBACSRC
         color: red;
         margin-top: 10px;
       }
-      .credentials-container,
-      .structure-folder {
+      .credentials-container, .structure-folder {
         margin-top: 20px;
         padding: 10px;
         background: #f3f3f3;
         border-radius: 5px;
+      }
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .tabs button {
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        background: #ddd;
+      }
+      .tabs button.active {
+        background: #007bff;
+        color: white;
       }
       pre {
         text-align: left;
@@ -158,6 +174,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
   buttonRole = UserRole.ADMIN;
+  activeTab: 'login' | 'structure' = 'login';
 
   constructor(
     private fb: FormBuilder,
@@ -178,7 +195,6 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(username, password).subscribe({
         next: (user) => {
-          // Navigate based on user role
           switch (user.role) {
             case UserRole.DOCTOR:
               this.router.navigate(['/doctor']);

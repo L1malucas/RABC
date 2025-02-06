@@ -1,59 +1,46 @@
-# ClinicRbac
+# Clinic RBAC Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+## Prerequisites
 
-## Development server
+- Node.js (v16+ recommended)
+- Angular CLI
 
-To start a local development server, run:
+## Setup Instructions
 
-```bash
-ng serve
-```
+1. Clone the repository
+2. Run `npm install`
+3. Run `ng serve`
+4. Open `http://localhost:4200`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Project Structure
 
-## Code scaffolding
+- `src/app/core/`: Core services and interceptors
+- `src/app/shared/`: Shared components and models
+- `src/app/profiles/`: Role-specific profile components
+- `src/app/forms/`: Form components
+- `src/app/admin/`: Admin management components
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Authentication
 
-```bash
-ng generate component component-name
-```
+- Roles: Doctor, Nurse, Psychologist, Admin
+- Mock login with predefined roles
+- RBAC implemented via AuthService
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Features
 
-```bash
-ng generate --help
-```
+- Custom role-based button components
+- Patient registration form
+- User management for admins
+- Role-based access control
 
-## Building
+## Development
 
-To build the project run:
+- Uses Angular Standalone Components
+- Implements signals for state management
+- Reactive forms for validation
+- TypeScript with strict typing
 
-```bash
-ng build
-```
+## Testing
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run `ng test` to execute unit tests
+Run `ng e2e` to run end-to-end tests
